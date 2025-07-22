@@ -246,29 +246,6 @@ function getUserJobHistory(address user) external view returns (uint256[] memory
 - [Sepolia Faucet 1](https://sepoliafaucet.com/)
 - [Sepolia Faucet 2](https://www.alchemy.com/faucets/ethereum-sepolia)
 
-## 📚 Documentation
-
-### For Users
-
-- [User Guide](docs/user-guide.md)
-- [FAQ](docs/faq.md)
-- [Troubleshooting](docs/troubleshooting.md)
-
-### For Developers
-
-- [API Reference](docs/api-reference.md)
-- [Smart Contract Documentation](docs/contracts.md)
-- [Integration Guide](docs/integration.md)
-- [SDK Documentation](docs/sdk.md)
-
-### Research Papers
-
-- [Quantum Computing with FHE](https://eprint.iacr.org/)
-- [Privacy-Preserving Quantum Algorithms](https://arxiv.org/)
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting pull requests.
 
 ### Development Setup
 
@@ -301,8 +278,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact & Support
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/HillaryEbert/QuantumCompute/issues)
-- **Discussions**: [Join community discussions](https://github.com/HillaryEbert/QuantumCompute/discussions)
 - **Email**: support@quantumprivacy.io
 
 ## 🗺️ Roadmap
@@ -325,19 +300,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 📋 Quantum state marketplace
 - 📋 Mobile application
 
-## 🎓 Educational Resources
-
-### Learn Quantum Computing
-
-- [Quantum Computing for Beginners](docs/quantum-basics.md)
-- [Understanding Quantum Gates](docs/quantum-gates.md)
-- [Quantum Algorithms Explained](docs/algorithms.md)
-
-### Learn Cryptography
-
-- [Introduction to FHE](docs/fhe-intro.md)
-- [Homomorphic Encryption in Practice](docs/fhe-practice.md)
-- [Privacy-Preserving Computation](docs/privacy-computing.md)
 
 ## 🔬 Research Applications
 
