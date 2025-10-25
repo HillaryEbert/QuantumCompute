@@ -9,7 +9,7 @@ A cutting-edge confidential quantum computing platform leveraging Fully Homomorp
 
 **Video Demonstration**: (demo.mp4)
 
-**Live Application**: [https://hillaryebert.github.io/QuantumCompute/](https://hillaryebert.github.io/QuantumCompute/)
+**Live Application**: [https://quantum-compute.vercel.app/](https://quantum-compute.vercel.app/)
 
 **GitHub Repository**: [https://github.com/HillaryEbert/QuantumCompute/](https://github.com/HillaryEbert/QuantumCompute/)
 
