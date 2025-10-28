@@ -1,0 +1,17 @@
+module.exports = {
+  skipFiles: [
+    'test/',
+    'mock/',
+    'interfaces/',
+    'GatewayHelper.sol'
+  ],
+  istanbulReporter: ['html', 'lcov', 'text', 'json'],
+  providerOptions: {
+    mnemonic: "test test test test test test test test test test test junk"
+  },
+  mocha: {
+    timeout: 100000,
+    grep: "@skip-on-coverage",
+    invert: true
+  }
+};
