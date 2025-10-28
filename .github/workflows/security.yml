@@ -1,0 +1,137 @@
+name: Security Audit
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+  schedule:
+    # Run security audit daily at 00:00 UTC
+    - cron: '0 0 * * *'
+
+jobs:
+  dependency-audit:
+    name: Dependency Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for high vulnerabilities
+        run: npm audit --audit-level=high
+
+  solidity-security:
+    name: Solidity Security Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Run Solhint security rules
+        run: npm run lint:sol
+
+      - name: Check for common vulnerabilities
+        run: |
+          echo "🔍 Checking for common Solidity vulnerabilities..."
+
+          # Check for tx.origin usage
+          if grep -r "tx.origin" contracts/ --include="*.sol"; then
+            echo "⚠️  Warning: tx.origin found - use msg.sender instead"
+          fi
+
+          # Check for block.timestamp usage
+          if grep -r "block.timestamp" contracts/ --include="*.sol"; then
+            echo "ℹ️  Info: block.timestamp usage detected - ensure no time manipulation risks"
+          fi
+
+          # Check for selfdestruct
+          if grep -r "selfdestruct" contracts/ --include="*.sol"; then
+            echo "⚠️  Warning: selfdestruct found - review carefully"
+          fi
+
+          # Check for delegatecall
+          if grep -r "delegatecall" contracts/ --include="*.sol"; then
+            echo "⚠️  Warning: delegatecall found - ensure proper access control"
+          fi
+
+  gas-optimization:
+    name: Gas Optimization Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run gas reporter
+        run: REPORT_GAS=true npm test
+        env:
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+
+      - name: Upload gas report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gas-report
+          path: gas-report.txt
+          retention-days: 30
+
+  code-scanning:
+    name: CodeQL Security Scanning
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

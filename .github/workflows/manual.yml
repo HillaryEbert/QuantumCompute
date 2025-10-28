@@ -1,0 +1,61 @@
+name: Manual Test Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      node-version:
+        description: 'Node.js version to use'
+        required: true
+        default: '20.x'
+        type: choice
+        options:
+          - '18.x'
+          - '20.x'
+
+jobs:
+  manual-test:
+    name: Manual Test (Node ${{ github.event.inputs.node-version }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js ${{ github.event.inputs.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ github.event.inputs.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check code formatting
+        run: npm run prettier:check
+
+      - name: Lint Solidity contracts
+        run: npm run lint:sol
+
+      - name: Lint TypeScript
+        run: npm run lint:ts
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Build TypeScript
+        run: npm run typechain
+
+      - name: Run tests
+        run: npm test
+
+      - name: Generate coverage report
+        run: npm run test:coverage
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
