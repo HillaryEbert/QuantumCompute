@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Run prettier check
+echo "📝 Checking code formatting..."
+npm run prettier:check || {
+  echo "❌ Formatting check failed. Run 'npm run prettier:write' to fix."
+  exit 1
+}
+
+# Run linters
+echo "🔎 Running linters..."
+npm run lint || {
+  echo "❌ Linting failed. Run 'npm run lint:fix' to fix issues."
+  exit 1
+}
+
+# Compile contracts
+echo "🔨 Compiling contracts..."
+npm run compile || {
+  echo "❌ Compilation failed. Fix errors before committing."
+  exit 1
+}
+
+echo "✅ All pre-commit checks passed!"
